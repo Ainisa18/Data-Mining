@@ -1,0 +1,23 @@
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv('/index_bmi.csv')
+
+df['Gender'] = df['Gender'].replace({'Female': 0, 'Male': 1})
+
+df['Index'] = df['Index'].replace(0, np.nan)
+df = df.dropna(subset=['Index'])
+
+stats_by_gender = df.groupby('Gender').agg({
+    'Weight': ['count', 'mean', 'max', 'min'],
+    'Height': ['count', 'mean', 'max', 'min']
+})
+print(stats_by_gender)
+
+import matplotlib.pyplot as plt
+df.groupby('Gender')['Index'].value_counts().unstack().plot(kind='bar', stacked=True)
+plt.title('BMI Index Berdasarkan Gender')
+plt.xlabel('Gender')
+plt.ylabel('Jumlah')
+plt.xticks([0, 1], rotation=0)
+plt.show()
