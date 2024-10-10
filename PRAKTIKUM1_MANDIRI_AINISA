@@ -1,0 +1,26 @@
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv('Downloads/500_Person_Gender_Height_Weight_Index.csv')
+
+#ubah kolom gender menjadi biner
+df['Gender'] = df['Gender'].replace({'Female':0, 'Male':1})
+
+#mengganti index bernilai 0 menjadi NaN
+df['Index'] = df['Index'].replace(0, np.nan)
+
+#menghitung statistik untuk jumlah, mean, nilai min dan nilai max dari data berdasarkan gender
+statistik_gender = df.groupby('Gender').agg({
+    'Weight': ['count', 'mean', 'min', 'max'],
+    'Height' : ['count', 'mean', 'min', 'max']
+})
+print(statistik_gender)
+
+#menampilkan grafik index BMI berdasarkan gender
+import matplotlib.pyplot as plt
+df.groupby('Gender')['Index'].value_counts().unstack().plot(kind='bar', stacked=False)
+plt.title('Index BMI Berdasarkan Gender')
+plt.xlabel('Gender')
+plt.ylabel('Jumlah')
+plt.xticks([0,1], rotation=0)
+plt.show()
