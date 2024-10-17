@@ -1,0 +1,117 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+df = pd.read_csv('/content/drive/MyDrive/Colab Notebooks/Time Management and Productivity Insights.csv')
+df
+
+#Mencari nilai Mean
+df['Daily Work Hours'].mean()
+
+#Mencari nilai median
+df['Daily Work Hours'].median()
+
+#Mencari nilai modus
+df['Daily Work Hours'].mode()
+
+#(Q1)
+q1 = df['Daily Work Hours'].quantile(0.25)
+print('Q1 : ', q1)
+#(Q3)
+q3 = df['Daily Work Hours'].quantile(0.75)
+print("Q3 : ", q3)
+iqr = q3 - q1
+print("IQR : ", iqr)
+
+#Membuat boxplot
+import matplotlib.pyplot as plt
+df.boxplot(column=['Daily Work Hours','Daily Sleep Hours'])
+plt.show()
+
+outlier_data = {
+    'User ID': ['86','87','88'],
+    'Age' : ['100', '113', '200'],
+    'Daily Work Hours' : [24, 21, 6],
+    'Daily Leisure Hours' : ['3.0', '4.0', '4.5'],
+    'Daily Exercise Minutes' : ['30', '60', '76'],
+    'Daily Sleep Hours' : [24, 23, 24],
+    'Productivity Score' : ['70', '65', '82'],
+    'Screen Time (hours)'  : [2, 5, 2],
+    'Commute Time (hours)' : ['1.0', '1', '2']
+}
+
+outlier_df = pd.DataFrame(outlier_data)
+
+df = pd.concat([df, outlier_df], ignore_index=True)
+df
+
+df.boxplot(column=['Daily Work Hours', 'Daily Sleep Hours'])
+plt.title('Boxplot of Daily Work Hours and Daily Sleep Hours')
+plt.show()
+
+#(Q1)
+q1 = df['Daily Work Hours'].quantile(0.25)
+print('Q1 : ', q1)
+#(Q3)
+q3 = df['Daily Work Hours'].quantile(0.75)
+print('Q3 : ', q3)
+iqr = q3 -q1
+# hitung batas bawah (lower bound) dan batas atas (Upper Bound) untuk outlier
+lower_bound = q1 - 1.5 * iqr
+upper_bound = q3 + 1.5 * iqr
+
+#Menemukan outlier di DataFrame
+outliers = df[(df['Daily Work Hours'] < lower_bound) | (df['Daily Work Hours'] > upper_bound)]
+
+print('Outlier Daily Work Hours: ')
+print(outliers)
+
+data_work_hours = df["Daily Work Hours"]
+#Buat histogram
+n, bins, patches = plt.hist(data_work_hours, bins=5, color='pink', edgecolor='black')
+
+#Memberi nama pada Label
+plt.title('Histogram')
+plt.xlabel('Daily Work Hours')
+plt.ylabel('Daily Sleep Hours')
+
+#Menampilkan rentang frekuensi di sumbu x
+bin_centers = 0.5 * (bins[:-1] + bins[1:])
+plt.xticks(bin_centers, ['{:.0f}-{:.0f} ' .format(bins[i], bins[i+1]) for i in range(len(bins)-1)])
+
+#Menampilkan histogram
+plt.show()
+
+#Mengidentifikasi baris outlier
+outliers_condition = ((df['Daily Work Hours'] > upper_bound) | (df['Daily Work Hours'] < lower_bound)) | (df['Daily Sleep Hours'] < 1) | (df['Daily Sleep Hours'] > 12)
+
+#Drop baris yang memenuhi kondisi outliers
+df_cleaned = df[~outliers_condition]  # Tanda ~ untuk negasi (tidak termasuk kondisi outlier)
+
+#Menampilkan data setelah penghapusan outliers
+print(df_cleaned.tail())
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+#Membuat DataFrame
+data = {'Daily Sleep Hours': [5.2, 8.8, 7.2, 6.9, 7.4, 6.5, 7.8, 6.1, 7.9, 6.8, 7.1, 6.6, 7.3, 6.9, 8, 6.4, 7.5, 5.8, 8.2, 7, 7.7, 8.6, 5.3, 6.1, 6.2, 8.3, 6.7, 7.4, 6.9,
+                              7.5, 8.1, 6.2, 7.8, 6.6, 8, 6.9, 7.1, 5.6, 7.5, 6.4, 7.9, 6.2, 8.5, 6.6, 7.4, 7.3, 7.8, 7.2, 5.7, 7.5, 6.9, 7.7, 5.9, 8.2, 6.7, 6.4, 7.6, 8, 7.9,
+                              7.1, 6.5, 7.8, 6.9, 6.7, 7.1, 7.5, 7, 6.4, 7.6, 5.5, 7.8, 6.9, 7.3, 6.7, 8, 7.5, 8.1, 6.6, 7, 5.9, 7.6, 7.4, 7.2, 6.8, 7.9],
+        'Productivity Score': [55, 69, 68, 91, 72, 79, 66, 85, 92, 78, 84, 73, 70, 80, 88, 60, 90, 92, 77, 82, 83, 85, 57, 92, 65, 91, 78, 88, 72, 93, 87, 75, 70, 85, 91, 67, 90, 95,
+                               89, 73, 92, 61, 93, 85, 74, 83, 89, 85, 95, 80, 92, 63, 74, 88, 94, 86, 78, 90, 71, 95, 84, 83, 89, 74, 92, 87, 75, 93, 62, 95, 90, 87, 81, 88, 92,
+                               95, 74, 89, 85, 77, 93, 88, 94, 83, 90]}
+
+df = pd.DataFrame(data)
+
+#Membuat scatter plot
+plt.scatter(df['Daily Sleep Hours'], df['Productivity Score'], color='skyblue', marker='o')
+
+#Memberikan nama untuk label
+plt.title('Scatter Plot Korelasi Positif')
+plt.xlabel('Daily Sleep Hours')
+plt.ylabel('Productivity Score')
+
+#Menampilkan plot
+plt.grid(True)
+plt.show()
