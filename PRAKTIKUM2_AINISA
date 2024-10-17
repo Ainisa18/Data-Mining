@@ -1,0 +1,128 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+df = pd.read_csv('/content/drive/MyDrive/Colab Notebooks/DATA.csv')
+df
+
+df['Height'].mean()
+
+df['Height'].median()
+
+df['Height'].mode()
+
+# Hitung kuartil pertama (Q1)
+q1 = df['Height'].quantile(0.25)
+print('Q1 : ', q1)
+#hitung kuartil ke-3 (Q3)
+q3 = df['Height'].quantile(0.75)
+print("Q3 : ", q3)
+iqr = q3 - q1
+print("IQR : ", iqr)
+
+df.describe()
+
+import matplotlib.pyplot as plt
+df.boxplot(column=['Height','Weight'])
+plt.show()
+
+outlier_data = {
+    'Gender' : ['Male', 'Female', 'Female', 'Male'],
+    'Height' : [51, 155, 45, 100],
+    'Weight' : [33, 320, 30, 335],
+    'Index'  : [2, 5, 2, 5]
+}
+
+outlier_df = pd.DataFrame(outlier_data)
+
+df = pd.concat([df, outlier_df], ignore_index=True)
+df
+
+df.boxplot(column=['Height', 'Weight'])
+plt.title('Boxplot of Height dab Weight with Outliers')
+plt.show()
+
+#hitung kuartil pertama (Q1)
+q1 = df['Height'].quantile(0.25)
+print('Q1 : ', q1)
+#hitung kuartil ke-3 (Q3)
+q3 = df['Height'].quantile(0.75)
+print('Q3 : ', q3)
+iqr = q3 -q1
+# hitung batas bawah (lower bound) dan batas atas (Upper Bound) untuk outlier
+lower_bound = q1 - 1.5 * iqr
+upper_bound = q3 + 1.5 * iqr
+
+# Temukan outlier DataFrame 
+outliers = df[(df['Height'] < lower_bound) | (df['Height'] > upper_bound)]
+
+print('Outlier Height: ')
+print(outliers)
+
+data_height = df["Height"]
+# Buat histogram
+n, bins, patches = plt.hist(data_height, bins=5, color='pink', edgecolor='black')
+
+# Tambahkan Label
+plt.title('Histogram Nilai')
+plt.xlabel('Height')
+plt.ylabel('Frekuensi')
+
+# Tampilkan rentang frekuensi di sumbu x
+bin_centers = 0.5 * (bins[:-1] + bins[1:])
+plt.xticks(bin_centers, ['{:.0f}-{:.0f} ' .format(bins[i], bins[i+1]) for i in range(len(bins)-1)])
+
+# Tampilkan histogram
+plt.show()
+
+# Mengidentifikasi baris outlier berdasarkan ciri-ciri yang unik
+
+outliers_condition = ((df['Height'] > upper_bound) | (df['Height'] < lower_bound)) | (df['Weight'] < 30) | (df['Weight'] > 200)
+
+# Drop baris yang memenuhi kondisi di atas (outliers)
+df_cleaned = df[~outliers_condition]  # Tanda ~ untuk negasi (tidak termasuk kondisi outlier)
+
+# Menampilkan data setelah penghapusan outliers
+print(df_cleaned.tail())
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Buat DataFrame contoh
+data = {'Nilail': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        'Nilai2': [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]}
+
+df = pd.DataFrame(data)
+
+# Buat scatter plot
+plt.scatter(df['Nilail'], df['Nilai2'], color='blue', marker='o')
+
+# Tambahkan Label
+plt.title('Scatter Plot Korelasi Positif')
+plt.xlabel('Nilai1')
+plt.ylabel('Nilai2')
+
+# Tampilkan plot
+plt.grid(True)
+plt.show()
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Buat DataFrame contoh
+data = {'Nilail': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        'Nilai2': [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]}
+
+df = pd.DataFrame(data)
+
+# Buat scatter plot
+plt.scatter(df['Nilail'], df['Nilai2'], color='red', marker='x')
+
+# Tambahkan Label
+plt.title('Scatter Plot Korelasi Negatif')
+plt.xlabel('Nilai1')
+plt.ylabel('Nilai2')
+
+# Tampilkan plot
+plt.grid(True)
+plt.show()
