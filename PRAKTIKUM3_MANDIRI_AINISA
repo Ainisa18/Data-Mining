@@ -1,0 +1,130 @@
+# Mengimpor libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Membaca file csv
+df = pd.read_csv("Downloads/archive (3)/student_sleep_patterns.csv")
+df
+
+# Menampilkan info dataframe
+df.info()
+
+# Menampilkan jumlah data null
+df.isnull().sum()
+
+# Menghapus kolom-kolom yang tidak diperlukan
+columns_to_drop = ['Student_ID']
+df.drop(columns = columns_to_drop, inplace = True)
+df
+
+# Mengganti nama kolom-kolom agar lebih mudah dibaca
+df.rename(columns={
+    'Age': 'Usia',
+    'Gender': 'Jenis_Kelamin',
+    'University_Year': 'Tahun_Perkuliahan',
+    'Sleep_Duration': 'Durasi_Tidur',
+    'Study_Hours': 'Durasi_Belajar',
+    'Screen_Time': 'Waktu_Layar',
+    'Caffeine_Intake': 'Asupan_Kafein',
+    'Physical_Activity': 'Aktivitas_Fisik',
+    'Sleep_Quality': 'Kualitas_Tidur',
+    'Weekday_Sleep_Start': 'Mulai_Tidur_Hari_Kerja',
+    'Weekend_Sleep_Start': 'Mulai_Tidur_Hari_Libur',
+    'Weekday_Sleep_End': 'Selesai_Tidur_Hari_Kerja',
+    'Weekend_Sleep_End': 'Selesai_Tidur_Hari_Libur'
+}, inplace=True)
+
+df
+
+# Mengimport library
+import matplotlib.pyplot as plt
+
+# Membuat visualisasi objek figure
+plt.figure(figsize=(10, 6))
+
+# Membuat histogram objek figure untuk kolom Waktu Layar
+plt.figure(figsize=(10, 6))
+plt.hist(df['Kualitas_Tidur'], bins=20, alpha=0.5, color='pink', edgecolor='red')
+plt.hist(df['Kualitas_Tidur'], bins=20, alpha=0.5, color='pink', edgecolor='red')
+
+# Memberikan label dan judul
+plt.xlabel('Kualitas Tidur')
+plt.ylabel('Frekuensi')
+plt.title('Histogram Kualitas Tidur')
+
+# Menambahkan garis pada sumbu y agar lebih mudah dibaca
+plt.grid(axis='y')
+
+# Menampilkan histogram
+plt.show()
+
+# Mengimport library
+import matplotlib.pyplot as plt
+
+# Membuat visualisasi objek figure
+plt.figure(figsize=(10, 6))
+
+# Mmebuat histogram untuk kolom Waktu Layar
+plt.hist(df['Waktu_Layar'], alpha=0.7, bins=20, color='yellow', edgecolor='blue')
+
+# Memberikan label dan judul
+plt.xlabel('Waktu Layar (jam)')
+plt.ylabel('Frekuensi')
+plt.title('Distribusi Screen Time (Waktu Layar)')
+
+# Menambahkan garis di sumbu y agar mudah dibaca
+plt.grid(axis='y')
+
+# Menampilkan histogram
+plt.show()
+
+# Import libraries
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
+
+# Hanya mengambil kolom numerik
+numeric_df = df.select_dtypes(include=[np.number])
+
+# Normalisasi kolom numerik dengan MinMax Scaler
+MinMax_scaler = MinMaxScaler()
+scaled_values = MinMax_scaler.fit_transform(numeric_df)
+
+# Membuat DataFrame baru
+MinMax_df = pd.DataFrame(scaled_values, columns=numeric_df.columns)
+
+# Menampilkan hasil
+print("\nData Setelah MinMax Scaling:")
+print(MinMax_df)
+
+
+# Mengimport libraries
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+
+# Hanya mengambil kolom numerik
+numeric_df = df.select_dtypes(include=[np.number])
+
+# Normalisasi kolom numerik dengan Standard Scaler
+Standard_scaler = StandardScaler()
+scaled_standard_values = Standard_scaler.fit_transform(numeric_df)
+Standard_df = pd.DataFrame(scaled_standard_values, columns=numeric_df.columns)
+
+# Menampilkan hasil
+print("\nData Setelah Standard Scaling (Hanya Kolom Numerik):")
+print(Standard_df)
+
+# Hanya mengambil kolom numerik
+numeric_df = df.select_dtypes(include=[np.number])
+
+# Menentukan Scaling Factor
+scaling_factor = 2 
+
+# Normalisasi kolom numerik dengan Scaling Factor
+scaled_df = numeric_df * scaling_factor
+
+# Menampilkan DataFrame hasil Scaling Factor
+print("\nData Setelah Scaling dengan Faktor (Hanya Kolom Numerik):")
+print(scaled_df)
