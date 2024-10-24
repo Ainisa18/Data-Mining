@@ -1,0 +1,36 @@
+# Mengimpor libraries
+import pandas as pd
+import numpy as np
+
+# Membaca file csv
+df = pd.read_csv("Downloads/BL-Flickr-Images-Book.csv.crdownload")
+df
+
+# Menampilkan info dataframe
+df.info()
+
+# Menampilkan jumlah data null
+df.isnull().sum()
+
+# Menghapus kolom-kolom yang tidak diperlukan
+columns_to_drop = ['Edition Statement', 'Corporate Author', 'Corporate Contributors', 'Former owner', 'Engraver']
+df.drop(columns=columns_to_drop, inplace=True)
+df
+
+df.set_index('Identifier', inplace=True)
+df
+
+# Mengganti nama kolom-kolom agar lebih mudah dibaca
+df.rename(columns={
+    'Place of Publication': 'Tempat_Penerbitan',
+    'Date of Publication': 'Tahun_Penerbitan',
+    'Publisher': 'Penerbit',
+    'Title': 'Judul',
+    'Author': 'Penulis',
+    'Contributors': 'Kontributor',
+    'Issuance type': 'Jenis_Penerbitan',
+    'Flickr URL': 'URL_Flickr',
+    'Shelfmarks': 'Penanda_Rak'
+}, inplace=True)
+df
+
