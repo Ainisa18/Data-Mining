@@ -1,0 +1,29 @@
+import pandas as pd
+df = pd.read_csv('Downloads/GroceryStoreDataSet.csv', names = ['products'], sep = ',')
+df.head()
+
+df.values
+
+data = list(df["products"].apply(lambda x:x.split(",") ))
+data
+
+from mlxtend.preprocessing import TransactionEncoder
+te = TransactionEncoder()
+
+data_encoded = te.fit(data).transform(data)
+
+df = pd.DataFrame(data_encoded, columns=te.columns_)
+df = df.astype(int)
+df
+
+df = df.astype(int)
+df = df.astype(bool)
+
+from mlxtend.frequent_patterns import apriori, association_rules
+frequent_itemsets = apriori(df, min_support=0.2, use_colnames=True)
+
+rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1.0)
+
+frequent_itemsets
+
+rules
